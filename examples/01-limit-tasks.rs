@@ -3,14 +3,15 @@ use rand::{thread_rng, Rng};
 use tokio::task::JoinSet;
 use anyhow::Result;
 
+const MAX_CONCURRENT_TASKS: usize = 2; 
+
 #[tokio::main]
 async fn main() -> Result<()> {
-    let max_concurrent = 2;
     let ids = ["1", "x", "3", "4", "5", "6", "7", "8", "9", "a"];
     let mut tasks = JoinSet::new();
     
     for id in ids {
-        while tasks.len() >= max_concurrent {
+        while tasks.len() >= MAX_CONCURRENT_TASKS {
             if let Some (res) = tasks.join_next().await {
                 match res {
                     Ok(_) => (),
