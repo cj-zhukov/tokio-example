@@ -1,12 +1,13 @@
+use std::error::Error;
+
 use tokio::time::{sleep, Duration};
 use rand::{thread_rng, Rng};
 use tokio::task::JoinSet;
-use anyhow::Result;
 
 const MAX_CONCURRENT_TASKS: usize = 2; 
 
 #[tokio::main]
-async fn main() -> Result<()> {
+async fn main() -> Result<(), Box<dyn Error>> {
     let ids = ["1", "x", "3", "4", "5", "6", "7", "8", "9", "a"];
     let mut tasks = JoinSet::new();
     

@@ -1,10 +1,11 @@
 use tokio::time::{sleep, Duration};
 use rand::{thread_rng, Rng};
-use tokio::task::JoinSet;
-use anyhow::Result;
+use tokio::task::JoinSet;   
 
+type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 const MAX_CONCURRENT_TASKS: usize = 2; 
 
+ 
 #[tokio::main]
 async fn main() -> Result<()> {
     let ids = ["1", "x", "3", "4", "5", "6", "7", "8", "9", "a"];
