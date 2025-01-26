@@ -3,7 +3,7 @@ use rand::{thread_rng, Rng};
 use tokio::task::JoinSet;   
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
-const MAX_CONCURRENT_TASKS: usize = 2; 
+const MAX_CONCURRENT_TASKS: usize = 4; 
 
  
 #[tokio::main]
@@ -17,9 +17,10 @@ async fn main() -> Result<()> {
         if tasks.len() == MAX_CONCURRENT_TASKS {
             if let Some (res) = tasks.join_next().await {
                 match res {
-                    Ok(res) => match res {
-                        Ok(_) => (),
-                        Err(e) => println!("failed running foo: {}", e)
+                    Ok(res) => {
+                        if let Err(e) = res {
+                            println!("failed running foo: {}", e);
+                        }
                     },
                     Err(e) => println!("failed running task: {}", e)
                 }
@@ -29,9 +30,10 @@ async fn main() -> Result<()> {
 
     while let Some(res) = tasks.join_next().await {
         match res {
-            Ok(res) => match res {
-                Ok(_) => (),
-                Err(e) => println!("failed running foo: {}", e)
+            Ok(res) => {
+                if let Err(e) = res {
+                    println!("failed running foo: {}", e);
+                }
             },
             Err(e) => println!("failed running task: {}", e)
         }

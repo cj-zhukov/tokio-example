@@ -26,7 +26,7 @@ async fn main() -> Result<()> {
                 Ok(val) => outputs.push(val),
                 Err(e) => println!("failed processing data: {}", e)
             },
-            Err(e) => println!("failed running foo: {}", e)
+            Err(e) => println!("failed running task: {}", e)
         }
     }
 

@@ -14,9 +14,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
     for id in ids {
         while tasks.len() >= MAX_CONCURRENT_TASKS {
             if let Some (res) = tasks.join_next().await {
-                match res {
-                    Ok(_) => (),
-                    Err(e) => println!("failed running foo: {}", e)
+                if let Err(e) = res {
+                    println!("failed running task: {}", e);
                 }
             }
         }
@@ -26,9 +25,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
     println!("done spawning");
     
     while let Some(res) = tasks.join_next().await {
-        match res {
-            Ok(_) => (),
-            Err(e) => println!("failed running foo: {}", e)
+        if let Err(e) = res {
+            println!("failed running task: {}", e);
         }
     }
     
